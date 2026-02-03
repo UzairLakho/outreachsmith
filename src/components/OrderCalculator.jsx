@@ -83,6 +83,7 @@ const OrderCalculator = ({ serviceData }) => {
                       <div>
                         <h3 className="text-lg font-semibold text-slate-900">{tier.da}</h3>
                         <div className="text-sm text-slate-500">Typical delivery: {tier.tat}</div>
+                        <div className="text-sm text-slate-500">Traffic: {tier.traffic}</div>
                       </div>
                       {quantity > 0 && <Check className="h-5 w-5 text-orange-600" />}
                     </div>
@@ -157,6 +158,7 @@ const OrderCalculator = ({ serviceData }) => {
                       <div>
                         <div className="font-semibold text-slate-900">{tier.da}</div>
                         <div className="text-xs text-slate-500">Qty: {tierQuantities[tier.da]}</div>
+                        <div className="text-xs text-slate-500">Traffic: {tier.traffic}</div>
                       </div>
                       <div className="font-semibold text-slate-900">
                         ${(tierQuantities[tier.da] * tier.price).toFixed(2)}
@@ -207,3 +209,5 @@ const OrderCalculator = ({ serviceData }) => {
 };
 
 export default OrderCalculator;
+
+
