@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ChevronDown, ShoppingCart, Menu, X } from 'lucide-react';
 import { useCart } from '../context/CartContext';
@@ -9,15 +9,27 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { getItemCount } = useCart();
   const navigate = useNavigate();
+  const closeTimerRef = useRef(null);
 
-  const handleServicesBlur = (event) => {
-    if (event.currentTarget.contains(event.relatedTarget)) {
-      return;
+  const openServicesMenu = () => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
     }
-    setServicesOpen(false);
+    setServicesOpen(true);
   };
 
-  const handleServicesMouseLeave = (event) => {
+  const scheduleCloseMenu = () => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+    }
+    closeTimerRef.current = setTimeout(() => {
+      setServicesOpen(false);
+      closeTimerRef.current = null;
+    }, 180);
+  };
+
+  const handleServicesBlur = (event) => {
     if (event.currentTarget.contains(event.relatedTarget)) {
       return;
     }
@@ -38,9 +50,9 @@ const Navbar = () => {
           <div className="hidden lg:flex items-center gap-10">
             <div
               className="relative"
-              onMouseEnter={() => setServicesOpen(true)}
-              onMouseLeave={handleServicesMouseLeave}
-              onFocus={() => setServicesOpen(true)}
+              onMouseEnter={openServicesMenu}
+              onMouseLeave={scheduleCloseMenu}
+              onFocus={openServicesMenu}
               onBlur={handleServicesBlur}
             >
               <button
@@ -69,7 +81,9 @@ const Navbar = () => {
                   id="services-menu"
                   role="menu"
                   aria-label="Services"
-                  className="absolute top-full left-0 mt-3 w-96 bg-white rounded-2xl border border-slate-200 shadow-xl p-3"
+                  onMouseEnter={openServicesMenu}
+                  onMouseLeave={scheduleCloseMenu}
+                  className="absolute top-full left-0 mt-2 w-96 bg-white rounded-2xl border border-slate-200 shadow-xl p-3"
                 >
                   <div className="grid gap-2">
                     {serviceCards.map((service) => (
