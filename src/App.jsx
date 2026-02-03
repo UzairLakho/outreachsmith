@@ -20,6 +20,8 @@ function App() {
               <Route path="/blogger-outreach" element={<ServicePage />} />
               <Route path="/niche-edits" element={<ServicePage />} />
               <Route path="/multilingual" element={<ServicePage />} />
+              <Route path="/infographic-outreach" element={<ServicePage />} />
+              <Route path="/managed-link-building" element={<ServicePage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/case-studies" element={<CaseStudies />} />
             </Routes>

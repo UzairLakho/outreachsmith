@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
 import OrderCalculator from '../components/OrderCalculator';
 import { pricingData } from '../data/pricing';
@@ -13,10 +13,12 @@ const ServicePage = () => {
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-slate-50 min-h-screen pt-24">
       <OrderCalculator serviceData={serviceData} slug={slug} />
     </div>
   );
 };
 
 export default ServicePage;
+
+

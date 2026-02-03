@@ -15,7 +15,7 @@ const CartPage = () => {
           <p className="text-gray-600 mb-8">Start building your link building campaign</p>
           <Link 
             to="/" 
-            className="inline-block px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+            className="inline-block px-8 py-3 bg-orange-600 text-white rounded-lg font-semibold hover:bg-orange-700 transition-colors"
           >
             Browse Services
           </Link>
@@ -101,20 +101,20 @@ const CartPage = () => {
                 </div>
                 <div className="border-t border-gray-200 pt-3 flex justify-between items-center">
                   <span className="text-lg font-bold text-gray-900">Total</span>
-                  <span className="text-3xl font-bold text-blue-600">${getTotal().toFixed(2)}</span>
+                  <span className="text-3xl font-bold text-orange-600">${getTotal().toFixed(2)}</span>
                 </div>
               </div>
 
-              <button className="w-full py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors mb-3">
+              <button className="w-full py-3 bg-orange-600 text-white rounded-lg font-semibold hover:bg-orange-700 transition-colors mb-3">
                 Proceed to Checkout
               </button>
 
-              <button className="w-full py-3 border-2 border-gray-200 text-gray-700 rounded-lg font-semibold hover:border-blue-600 hover:text-blue-600 transition-colors">
+              <button className="w-full py-3 border-2 border-gray-200 text-gray-700 rounded-lg font-semibold hover:border-orange-600 hover:text-orange-600 transition-colors">
                 Request Custom Quote
               </button>
 
-              <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-                <p className="text-sm text-blue-900">
+              <div className="mt-6 p-4 bg-orange-50 rounded-lg">
+                <p className="text-sm text-orange-900">
                   <span className="font-semibold">Secure Checkout:</span> All orders are processed securely. Questions? Contact us anytime.
                 </p>
               </div>
@@ -127,3 +127,4 @@ const CartPage = () => {
 };
 
 export default CartPage;
+

@@ -1,99 +1,100 @@
-import React from 'react';
-import { TrendingUp, Clock, Target } from 'lucide-react';
+﻿import React from 'react';
+import { TrendingUp, Clock, Target, Check } from 'lucide-react';
 
 const CaseStudies = () => {
   const cases = [
     {
-      title: "E-commerce Site Doubles Organic Traffic",
-      client: "Online Retail Store",
-      challenge: "Struggling to rank for competitive product keywords. Traffic had plateaued for 6 months.",
-      solution: "Built 50 high-quality links using our blogger outreach service over 3 months.",
+      title: "E-commerce brand doubles organic traffic",
+      client: "Online retail store",
+      challenge: "Plateaued growth for 6 months in competitive product keywords.",
+      solution: "Built 50 contextual links through blogger outreach across 90 days.",
       results: [
         "102% increase in organic traffic",
-        "Ranking on page 1 for 15 target keywords",
-        "35% increase in online sales"
+        "15 target keywords moved to page one",
+        "35% uplift in online sales"
       ],
-      metric: "102% Traffic",
+      metric: "102% traffic",
       icon: TrendingUp
     },
     {
-      title: "SaaS Company Cuts Link Building Time by 60%",
-      client: "B2B Software Company",
-      challenge: "Previous link building took too long. Needed faster results to keep up with competitors.",
-      solution: "Switched to our niche edits service for rapid placements.",
+      title: "SaaS team cuts link building time by 60%",
+      client: "B2B software company",
+      challenge: "Legacy vendor took 3+ weeks per placement and missed timelines.",
+      solution: "Switched to niche edits for rapid, vetted placements.",
       results: [
-        "Links live in 48-72 hours (vs 3 weeks before)",
-        "Doubled monthly link acquisition",
-        "Better quality sites than previous vendor"
+        "Links live in 48-72 hours",
+        "2x monthly link acquisition",
+        "Higher quality publishers"
       ],
-      metric: "60% Faster",
+      metric: "60% faster",
       icon: Clock
     },
     {
-      title: "Marketing Agency Scales Client Results",
-      client: "Digital Marketing Agency",
-      challenge: "Needed reliable link building partner to service growing client base.",
-      solution: "Used our white-label link building services for 15+ clients.",
+      title: "Agency scales delivery across 15 clients",
+      client: "Digital marketing agency",
+      challenge: "Needed reliable fulfillment without hiring an outreach team.",
+      solution: "White-label delivery across campaigns with shared reporting.",
       results: [
         "Consistent quality across all campaigns",
         "Client retention improved to 95%",
-        "Able to take on 3x more clients"
+        "3x capacity without extra headcount"
       ],
-      metric: "3x Scale",
+      metric: "3x capacity",
       icon: Target
     }
   ];
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-slate-50 min-h-screen pt-24">
       {/* Hero */}
-      <section className="bg-gradient-to-b from-gray-50 to-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">Success Stories</h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Real results from real businesses using our link building services.
+      <section className="bg-mesh py-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-xs uppercase tracking-[0.2em] text-orange-600 font-semibold">Case studies</p>
+          <h1 className="mt-4 text-4xl lg:text-5xl font-semibold text-slate-900">Results from real campaigns</h1>
+          <p className="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">
+            See how agencies and in-house teams use OutreachSmith to deliver consistent, measurable link building outcomes.
           </p>
         </div>
       </section>
 
       {/* Case Studies */}
       <section className="py-16">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           {cases.map((study, index) => {
             const Icon = study.icon;
             return (
-              <div key={index} className="bg-white border-2 border-gray-200 rounded-xl p-8 hover:border-blue-600 transition-all shadow-sm hover:shadow-xl">
-                <div className="flex items-start gap-6 mb-6">
-                  <div className="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Icon className="h-8 w-8 text-blue-600" />
+              <div key={index} className="bg-white border border-slate-200 rounded-2xl p-8 shadow-soft">
+                <div className="flex flex-col lg:flex-row lg:items-start gap-6 mb-6">
+                  <div className="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Icon className="h-7 w-7 text-orange-600" />
                   </div>
                   <div className="flex-1">
-                    <div className="flex items-start justify-between mb-2">
-                      <h2 className="text-2xl font-bold text-gray-900">{study.title}</h2>
-                      <span className="px-4 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-semibold">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-2">
+                      <h2 className="text-2xl font-semibold text-slate-900">{study.title}</h2>
+                      <span className="px-4 py-1 bg-orange-100 text-orange-700 rounded-full text-sm font-semibold">
                         {study.metric}
                       </span>
                     </div>
-                    <p className="text-gray-600 italic">{study.client}</p>
+                    <p className="text-slate-500">{study.client}</p>
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-6 mb-6">
+                <div className="grid md:grid-cols-3 gap-6">
                   <div>
-                    <h3 className="font-bold text-gray-900 mb-2">Challenge</h3>
-                    <p className="text-gray-600 text-sm">{study.challenge}</p>
+                    <h3 className="font-semibold text-slate-900 mb-2">Challenge</h3>
+                    <p className="text-slate-600 text-sm">{study.challenge}</p>
                   </div>
                   <div>
-                    <h3 className="font-bold text-gray-900 mb-2">Solution</h3>
-                    <p className="text-gray-600 text-sm">{study.solution}</p>
+                    <h3 className="font-semibold text-slate-900 mb-2">Solution</h3>
+                    <p className="text-slate-600 text-sm">{study.solution}</p>
                   </div>
                   <div>
-                    <h3 className="font-bold text-gray-900 mb-2">Results</h3>
-                    <ul className="space-y-1 text-sm">
+                    <h3 className="font-semibold text-slate-900 mb-2">Results</h3>
+                    <ul className="space-y-2 text-sm">
                       {study.results.map((result, i) => (
-                        <li key={i} className="text-gray-600 flex items-start">
-                          <span className="text-green-600 mr-2">✓</span>
-                          {result}
+                        <li key={i} className="text-slate-600 flex items-start">
+                          <Check className="h-4 w-4 text-orange-600 mt-0.5 mr-2 flex-shrink-0" />
+                          <span>{result}</span>
                         </li>
                       ))}
                     </ul>
@@ -106,20 +107,22 @@ const CaseStudies = () => {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Ready to Get Similar Results?
-          </h2>
-          <p className="text-lg text-gray-600 mb-6">
-            Start building quality links today. No contracts, no commitment.
-          </p>
-          <a 
-            href="/"
-            className="inline-block px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-          >
-            View Services
-          </a>
+          <div className="bg-white border border-slate-200 rounded-2xl p-10 shadow-soft">
+            <h2 className="text-3xl font-semibold text-slate-900 mb-4">
+              Ready for similar results?
+            </h2>
+            <p className="text-lg text-slate-600 mb-6">
+              Start building quality links today. No contracts, no minimums, no fluff.
+            </p>
+            <a
+              href="/#services"
+              className="inline-block px-8 py-3 bg-orange-600 text-white rounded-full font-semibold hover:bg-orange-700 transition-colors"
+            >
+              View services
+            </a>
+          </div>
         </div>
       </section>
     </div>

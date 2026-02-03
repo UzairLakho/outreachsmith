@@ -1,84 +1,140 @@
-import React, { useState } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Plus, Minus, ShoppingCart, Check } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
-const OrderCalculator = ({ serviceData, slug }) => {
-  const [selectedTier, setSelectedTier] = useState(null);
-  const [quantity, setQuantity] = useState(1);
+const OrderCalculator = ({ serviceData }) => {
+  const [tierQuantities, setTierQuantities] = useState({});
   const [added, setAdded] = useState(false);
   const { addToCart } = useCart();
 
-  const handleAddToCart = () => {
-    if (!selectedTier) return;
+  useEffect(() => {
+    const initial = {};
+    serviceData.tiers.forEach((tier) => {
+      initial[tier.da] = 0;
+    });
+    setTierQuantities(initial);
+  }, [serviceData]);
 
-    addToCart({
-      service: serviceData.title,
-      tier: selectedTier.da,
-      price: selectedTier.price,
-      tat: selectedTier.tat,
-      quantity: quantity
+  const updateTierQuantity = (tierKey, nextValue) => {
+    setTierQuantities((prev) => ({
+      ...prev,
+      [tierKey]: Math.max(0, nextValue)
+    }));
+  };
+
+  const selectedTiers = serviceData.tiers.filter(
+    (tier) => (tierQuantities[tier.da] || 0) > 0
+  );
+
+  const totalItems = selectedTiers.reduce(
+    (sum, tier) => sum + (tierQuantities[tier.da] || 0),
+    0
+  );
+
+  const subtotal = selectedTiers.reduce(
+    (sum, tier) => sum + (tierQuantities[tier.da] || 0) * tier.price,
+    0
+  );
+
+  const handleAddToCart = () => {
+    if (selectedTiers.length === 0) return;
+
+    selectedTiers.forEach((tier) => {
+      addToCart({
+        service: serviceData.title,
+        tier: tier.da,
+        price: tier.price,
+        tat: tier.tat,
+        quantity: tierQuantities[tier.da]
+      });
     });
 
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };
 
-  const total = selectedTier ? selectedTier.price * quantity : 0;
-
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid lg:grid-cols-3 gap-10">
         {/* Left Side - Service Info & Tier Selection */}
         <div className="lg:col-span-2">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">{serviceData.title}</h1>
-          <p className="text-lg text-gray-600 mb-8">{serviceData.description}</p>
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-semibold uppercase tracking-wide">
+            Service details
+          </div>
+          <h1 className="mt-4 text-4xl font-semibold text-slate-900">{serviceData.title}</h1>
+          <p className="mt-3 text-lg text-slate-600">{serviceData.description}</p>
 
           {/* Tier Selection */}
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Select Your Tier</h2>
+          <div className="mt-10">
+            <h2 className="text-2xl font-semibold text-slate-900 mb-4">Select your tiers</h2>
             <div className="grid sm:grid-cols-2 gap-4">
-              {serviceData.tiers.map((tier, index) => (
-                <button
-                  key={index}
-                  onClick={() => setSelectedTier(tier)}
-                  className={`p-6 border-2 rounded-lg text-left transition-all ${
-                    selectedTier?.da === tier.da
-                      ? 'border-blue-600 bg-blue-50'
-                      : 'border-gray-200 hover:border-blue-300'
-                  }`}
-                >
-                  <div className="flex items-start justify-between mb-2">
-                    <h3 className="text-xl font-bold text-gray-900">{tier.da}</h3>
-                    {selectedTier?.da === tier.da && (
-                      <Check className="h-6 w-6 text-blue-600" />
-                    )}
+              {serviceData.tiers.map((tier, index) => {
+                const quantity = tierQuantities[tier.da] || 0;
+                return (
+                  <div
+                    key={index}
+                    className={`p-6 rounded-2xl text-left border transition-all shadow-sm ${
+                      quantity > 0
+                        ? 'border-orange-500 bg-orange-50'
+                        : 'border-slate-200 hover:border-orange-300 hover:bg-orange-50/60'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between mb-2">
+                      <div>
+                        <h3 className="text-lg font-semibold text-slate-900">{tier.da}</h3>
+                        <div className="text-sm text-slate-500">Typical delivery: {tier.tat}</div>
+                      </div>
+                      {quantity > 0 && <Check className="h-5 w-5 text-orange-600" />}
+                    </div>
+                    <div className="text-3xl font-semibold text-slate-900 mb-4">${tier.price}</div>
+
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-slate-500">Quantity</span>
+                      <div className="flex items-center gap-2 bg-white rounded-full border border-slate-200 px-2 py-1">
+                        <button
+                          type="button"
+                          onClick={() => updateTierQuantity(tier.da, quantity - 1)}
+                          className="p-1.5 hover:bg-slate-100 rounded-full transition-colors"
+                          aria-label={`Decrease ${tier.da} quantity`}
+                        >
+                          <Minus className="h-4 w-4" />
+                        </button>
+                        <span className="w-6 text-center text-sm font-semibold text-slate-900">{quantity}</span>
+                        <button
+                          type="button"
+                          onClick={() => updateTierQuantity(tier.da, quantity + 1)}
+                          className="p-1.5 hover:bg-slate-100 rounded-full transition-colors"
+                          aria-label={`Increase ${tier.da} quantity`}
+                        >
+                          <Plus className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-3xl font-bold text-blue-600 mb-2">${tier.price}</div>
-                  <div className="text-sm text-gray-500">TAT: {tier.tat}</div>
-                </button>
-              ))}
+                );
+              })}
             </div>
           </div>
 
           {/* Features */}
-          <div className="mt-12 bg-gray-50 rounded-lg p-6">
-            <h3 className="font-bold text-gray-900 mb-4">What's Included:</h3>
-            <ul className="space-y-2">
+          <div className="mt-10 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+            <h3 className="font-semibold text-slate-900 mb-4">What is included</h3>
+            <ul className="space-y-3">
               <li className="flex items-start">
-                <Check className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700">100% Manual Outreach - No automation</span>
+                <Check className="h-5 w-5 text-orange-600 mr-2 flex-shrink-0 mt-0.5" />
+                <span className="text-slate-600">Manual outreach and publisher vetting</span>
               </li>
               <li className="flex items-start">
-                <Check className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700">White-label Reports - Client-ready</span>
+                <Check className="h-5 w-5 text-orange-600 mr-2 flex-shrink-0 mt-0.5" />
+                <span className="text-slate-600">Contextual placements with editorial review</span>
               </li>
               <li className="flex items-start">
-                <Check className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700">Direct Admin Access - No middlemen</span>
+                <Check className="h-5 w-5 text-orange-600 mr-2 flex-shrink-0 mt-0.5" />
+                <span className="text-slate-600">Client-ready report with live URLs</span>
               </li>
               <li className="flex items-start">
-                <Check className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700">Anti-Poaching Guarantee - Your clients stay yours</span>
+                <Check className="h-5 w-5 text-orange-600 mr-2 flex-shrink-0 mt-0.5" />
+                <span className="text-slate-600">White-label delivery and NDA-ready workflows</span>
               </li>
             </ul>
           </div>
@@ -86,74 +142,60 @@ const OrderCalculator = ({ serviceData, slug }) => {
 
         {/* Right Side - Sticky Summary */}
         <div className="lg:col-span-1">
-          <div className="sticky top-24 bg-white border-2 border-gray-200 rounded-lg p-6 shadow-lg">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">Order Summary</h3>
+          <div className="sticky top-28 bg-white border border-slate-200 rounded-2xl p-6 shadow-soft">
+            <h3 className="text-xl font-semibold text-slate-900 mb-4">Order summary</h3>
 
-            {!selectedTier ? (
-              <div className="text-center py-8 text-gray-500">
-                Select a tier to get started
+            {selectedTiers.length === 0 ? (
+              <div className="text-center py-10 text-slate-500">
+                Select quantities to get started
               </div>
             ) : (
               <>
-                <div className="mb-6">
-                  <div className="text-sm text-gray-600 mb-1">Selected Tier</div>
-                  <div className="text-lg font-bold text-gray-900">{selectedTier.da}</div>
-                  <div className="text-sm text-gray-500">TAT: {selectedTier.tat}</div>
+                <div className="space-y-3 mb-6">
+                  {selectedTiers.map((tier) => (
+                    <div key={tier.da} className="flex items-center justify-between text-sm text-slate-600">
+                      <div>
+                        <div className="font-semibold text-slate-900">{tier.da}</div>
+                        <div className="text-xs text-slate-500">Qty: {tierQuantities[tier.da]}</div>
+                      </div>
+                      <div className="font-semibold text-slate-900">
+                        ${(tierQuantities[tier.da] * tier.price).toFixed(2)}
+                      </div>
+                    </div>
+                  ))}
                 </div>
 
-                {/* Quantity Selector */}
-                <div className="mb-6">
-                  <label className="text-sm text-gray-600 mb-2 block">Quantity</label>
-                  <div className="flex items-center justify-between bg-gray-50 rounded-lg p-3">
-                    <button
-                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="p-2 hover:bg-gray-200 rounded-md transition-colors"
-                    >
-                      <Minus className="h-4 w-4" />
-                    </button>
-                    <span className="text-xl font-bold">{quantity}</span>
-                    <button
-                      onClick={() => setQuantity(quantity + 1)}
-                      className="p-2 hover:bg-gray-200 rounded-md transition-colors"
-                    >
-                      <Plus className="h-4 w-4" />
-                    </button>
-                  </div>
-                </div>
-
-                {/* Total */}
-                <div className="border-t border-gray-200 pt-4 mb-6">
+                <div className="border-t border-slate-200 pt-4 mb-6">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">Subtotal</span>
-                    <span className="text-2xl font-bold text-gray-900">${total.toFixed(2)}</span>
+                    <span className="text-slate-500">Subtotal ({totalItems} items)</span>
+                    <span className="text-2xl font-semibold text-slate-900">${subtotal.toFixed(2)}</span>
                   </div>
                 </div>
 
-                {/* Add to Cart Button */}
                 <button
                   onClick={handleAddToCart}
                   disabled={added}
-                  className={`w-full py-3 rounded-lg font-semibold transition-all ${
+                  className={`w-full py-3 rounded-full font-semibold transition-all ${
                     added
                       ? 'bg-green-600 text-white'
-                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                      : 'bg-orange-600 text-white hover:bg-orange-700'
                   }`}
                 >
                   {added ? (
                     <span className="flex items-center justify-center">
                       <Check className="h-5 w-5 mr-2" />
-                      Added to Cart!
+                      Added to cart
                     </span>
                   ) : (
                     <span className="flex items-center justify-center">
                       <ShoppingCart className="h-5 w-5 mr-2" />
-                      Add to Cart
+                      Add selected to cart
                     </span>
                   )}
                 </button>
 
-                <p className="text-xs text-gray-500 text-center mt-3">
-                  Agency-only pricing • No retail clients
+                <p className="text-xs text-slate-500 text-center mt-3">
+                  White-label delivery only. No retail clients.
                 </p>
               </>
             )}
