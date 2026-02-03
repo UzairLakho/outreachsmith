@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 import Homepage from './pages/Homepage';
 import ServicePage from './pages/ServicePage';
 import CartPage from './pages/CartPage';
@@ -13,6 +14,7 @@ function App() {
     <CartProvider>
       <Router>
         <div className="min-h-screen flex flex-col">
+          <ScrollToTop />
           <Navbar />
           <main className="flex-1">
             <Routes>

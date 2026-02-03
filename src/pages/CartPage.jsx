@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Minus, Trash2, ShoppingBag } from 'lucide-react';
 import { useCart } from '../context/CartContext';
@@ -8,7 +8,7 @@ const CartPage = () => {
 
   if (cartItems.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 py-20">
+      <div className="min-h-screen bg-gray-50 pt-24 pb-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <ShoppingBag className="h-24 w-24 text-gray-300 mx-auto mb-6" />
           <h1 className="text-3xl font-bold text-gray-900 mb-4">Your Cart is Empty</h1>
@@ -25,7 +25,7 @@ const CartPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-gray-50 pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl font-bold text-gray-900 mb-8">Shopping Cart</h1>
 
@@ -127,4 +127,5 @@ const CartPage = () => {
 };
 
 export default CartPage;
+
 
